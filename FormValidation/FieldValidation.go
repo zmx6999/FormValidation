@@ -6,6 +6,7 @@ import (
 	"strings"
 	"regexp"
 	"time"
+	"strconv"
 )
 
 type FieldValidation struct {
@@ -124,6 +125,14 @@ func (fv *FieldValidation) Format(format string) bool {
 	return false
 }
 
+func (fv *FieldValidation) Int() bool {
+	return fv.Format(`^(\+|-)?\d+$`)
+}
+
+func (fv *FieldValidation) Float() bool {
+	return fv.Format(`^[-+]?\d*\.?\d*$`)
+}
+
 func (fv *FieldValidation) Email() bool {
 	return fv.Format(`^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`)
 }
@@ -210,4 +219,30 @@ func (fv *FieldValidation) BeforeNow() bool {
 func (fv *FieldValidation) AfterNow() bool {
 	startTime:=time.Now().Format("2006-01-02 15:04")
 	return fv.EndTime(startTime)
+}
+
+func (fv *FieldValidation) Unsigned() bool {
+	if fv.Int() || fv.Float() {
+		str,isStr:=GetStr(fv.FieldValue,fv.Trim)
+		if isStr {
+			n,err:=strconv.ParseFloat(str,64)
+			if err==nil && n>=0 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (fv *FieldValidation) Positive() bool {
+	if fv.Int() || fv.Float() {
+		str,isStr:=GetStr(fv.FieldValue,fv.Trim)
+		if isStr {
+			n,err:=strconv.ParseFloat(str,64)
+			if err==nil && n>0 {
+				return true
+			}
+		}
+	}
+	return false
 }

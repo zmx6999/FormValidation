@@ -16,7 +16,9 @@ func main()  {
 	request["start_date"]="  2019-01-01  "
 	request["end_date"]="  2019-01-05  "
 	request["start_time"]="  2019-01-01 15:35  "
-	request["end_time"]="  2019-01-05 15:35  "
+	request["end_time"]="  2019-02-05 15:35  "
+	request["age"]="  28  "
+	request["year_income"]="  123456.78  "
 
 	fvs:=[]*FormValidation.FieldValidation{
 		&FormValidation.FieldValidation{
@@ -122,6 +124,48 @@ func main()  {
 			ValidMethodName:"EndTime",
 			ValidMethodArgs:[]interface{}{request["start_time"]},
 			ErrMsg:"end time should be later than start time",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"age",
+			ValidMethodName:"Int",
+			ValidMethodArgs:[]interface{}{},
+			ErrMsg:"age should be an integer",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"age",
+			ValidMethodName:"Unsigned",
+			ValidMethodArgs:[]interface{}{request["start_time"]},
+			ErrMsg:"age>=0",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"age",
+			ValidMethodName:"Positive",
+			ValidMethodArgs:[]interface{}{request["start_time"]},
+			ErrMsg:"age>0",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"year_income",
+			ValidMethodName:"Float",
+			ValidMethodArgs:[]interface{}{},
+			ErrMsg:"year_income should be a float",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"year_income",
+			ValidMethodName:"Unsigned",
+			ValidMethodArgs:[]interface{}{request["start_time"]},
+			ErrMsg:"year_income>=0",
+			Trim:true,
+		},
+		&FormValidation.FieldValidation{
+			FieldName:"year_income",
+			ValidMethodName:"Positive",
+			ValidMethodArgs:[]interface{}{request["start_time"]},
+			ErrMsg:"year_income>0",
 			Trim:true,
 		},
 	}
